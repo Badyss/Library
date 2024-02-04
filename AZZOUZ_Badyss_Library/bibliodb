@@ -1,0 +1,70 @@
+#!/usr/bin/env python3
+import biblio
+from biblio import commandes
+from biblio.bibliotheque import Bibliotheque
+from biblio.livre import Livre
+biblio = Bibliotheque()
+import datetime
+historique = []
+import os
+
+os.system('clear' if os.name == 'posix' else 'cls')
+
+
+
+commandes.debut_prog(biblio)
+
+def main():
+	com = input("""\n\nVeuillez entrer votre commande, appuyez sur "M" pour afficher le menu\n""")
+	#permet de définir "com" en tant que réponse à la question.
+	if com=="M":
+		os.system('clear' if os.name == 'posix' else 'cls')
+		#clear le terminal windows si ce n'est pas un terminal linux.
+		commandes.affiche_menu()
+		#appelle la fonction affiche_menu() du fichier commandes.py
+		historique.append(("M", datetime.datetime.now()))
+		#permet de coller "M" et l'heure à laquelle la commande a été exécutée dans la liste "historique"
+		#Ces deux lignes de code ont étés utilisées pour toutes les commandes du programme.
+	elif com=="LG":
+		os.system('clear' if os.name == 'posix' else 'cls')
+		commandes.liste_genre(biblio)
+		historique.append(("LG", datetime.datetime.now()))
+	elif com=="LL":
+		commandes.liste_livre(biblio)
+		historique.append(("LL", datetime.datetime.now()))
+	elif com=="NG":
+		os.system('clear' if os.name == 'posix' else 'cls')
+		commandes.nouveau_genre(biblio)
+		historique.append(("LL", datetime.datetime.now()))
+	elif com=="NL":
+		os.system('clear' if os.name == 'posix' else 'cls')
+		commandes.nouveau_livre(biblio)
+		historique.append(("NL", datetime.datetime.now()))
+	elif com=="SG":
+		os.system('clear' if os.name == 'posix' else 'cls')
+		commandes.supprimer_genre(biblio)
+		historique.append(("SG", datetime.datetime.now()))
+	elif com=="SL":
+		os.system('clear' if os.name == 'posix' else 'cls')
+		commandes.supprimer_livre(biblio)
+		historique.append(("SL", datetime.datetime.now()))
+	elif com=="H":
+		os.system('clear' if os.name == 'posix' else 'cls')
+		historique.append(("H", datetime.datetime.now()))
+		print("\033[36mHistorique des commandes :\033[0m\n")
+		for i, (com, heure) in enumerate(historique, 1):
+			#cette fonction va prendre pour chaque éléments dans history en prenant comme argument la commande saisie et l'heure.
+			#Enumerate permet d'indiquer le numéro de la commande, et donc on indique le numéro 1 car il n'ya pas de commandes 0.
+			heure = heure.strftime("Le %d/%m/%Y à %H:%M:%S")
+			#On attribue à la variable heure l'affichage que l'on souhaite que la commande history affiche.
+			print(f"{i}. {heure} : {com}")
+			#Après avoir définit la fonction heure, on peut maintenant print le rendu final de notre fonction historique.
+			#Et donc la pour tous les éléments dans historique[], elle va d'abord print le numéro de la commande, puis l'heure, puis la commande saisie
+	elif com=="Q":
+		commandes.quitter_prog(biblio)
+		os.system('clear' if os.name == 'posix' else 'cls')
+	else:
+		print("Commande invalide, veuillez réitérer \n")
+	main()
+	#Au lieu d'utiliser un While, j'ai préferé utiliser un retour de fonction pour simplifier.
+main()
